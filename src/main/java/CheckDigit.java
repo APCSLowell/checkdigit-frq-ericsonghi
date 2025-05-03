@@ -5,21 +5,16 @@ public class CheckDigit
    *  six, inclusive.  
    *          num >= 0  
    */  
-   public static int getCheck(int num) 
-   {  
-     int x = 0;
-     int i = num;
-     int multiplier = 7;
-     while(i > 0 && multiplier > 0){
-       x+= i%10 * multiplier;
-       i%10;
-       multiplier--;
-     }
-     while(x>10){
-       x/10;
-     }
-     return x;
-   }
+  public static int getCheck(int num) {
+    int sum = 0;
+    int numDigits = getNumberOfDigits(num);
+    for (int i = 1; i <= numDigits; i++) {
+      int digit = getDigit(num, i);
+      int weight = 8 - i;
+      sum += digit * weight;
+    }
+    return sum % 10;
+  }
  
   /** Returns true if numWithCheckDigit is valid, or false    
    *  otherwise, as described in part (b). 
@@ -40,13 +35,12 @@ public class CheckDigit
 return false;
    }    
    
-   /** Returns the number of digits in num. */    
-   public static int getNumberOfDigits(int num)    
-   {      
-    if(num < 10)
-      return 1;
-    return 1 + getNumberOfDigits(num/10);    
-   }    
+  public static boolean isValid(int numWithCheckDigit)    
+  {      
+    int checkDigit = numWithCheckDigit % 10;
+    int num = numWithCheckDigit / 10;
+    return getCheck(num) == checkDigit;
+  } 
    
    /** Returns the nthdigit of num.      
     *  Precondition: n >= 1 and n <= the number of digits in num     
